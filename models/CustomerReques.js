@@ -9,7 +9,6 @@ const customerRequestSchema = new mongoose.Schema({
   phoneNumber: {
     type: Number,
     minlength: [8, "please write valid phone number"],
-    maxlength: [12, "please write valid phone number"],
     required: true,
   },
   message: String,
@@ -19,4 +18,4 @@ const customerRequestSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.exports("CustomerReques", customerRequestSchema);
+module.exports = mongoose.model("CustomerReques", customerRequestSchema);
