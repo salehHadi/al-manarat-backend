@@ -1,43 +1,36 @@
 const mongoose = require("mongoose");
 
+// Straunge Problem I couldn't
+// add required: [true, "please provide a password"],
+// to any of the feilds in the schema
+
 const projectSchema = new mongoose.Schema({
   projectName: {
-    trype: String,
-    required: true,
-    maxlength: [20, "the name should be under 20 charecters"],
+    type: String,
+    require: true,
   },
   status: {
-    trype: String,
-    required: true,
+    type: String,
     enum: ["soon", "start selling", "sold out"],
   },
   area: {
-    trype: String,
-    required: true,
+    type: String,
   },
   floors: {
-    trype: Number,
-    required: true,
-    maxlength: [2, "the name should be under 2 charecters"],
+    type: Number,
   },
   appartements: {
-    trype: Number,
-    required: true,
-    maxlength: [3, "the name should be under 3 charecters"],
+    type: Number,
   },
   roofs: {
-    trype: Number,
-    required: true,
-    maxlength: [2, "the name should be under 2 charecters"],
+    type: Number,
   },
   photo: {
     id: {
       type: String,
-      required: true,
     },
     secure_url: {
       type: String,
-      required: true,
     },
   },
   createdAt: {

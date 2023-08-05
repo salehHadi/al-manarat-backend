@@ -5,17 +5,32 @@ const cors = require("cors");
 const morgan = require("morgan");
 const cookieParcer = require("cookie-parser");
 const fileUpload = require("express-fileupload");
+const bodyParser = require("body-parser");
+
+// to get image from FrontEnd image
+const corsOrigin = "http://localhost:3000/";
+app.use(express.static(__dirname + "../.."));
+app.use(cors());
+app.use(
+  cors({
+    origin: [corsOrigin],
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
 
 // regular middleware
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// cors to connect with frontend
-app.use(cors());
+app.use(express.json());
 
 // cookie & fileUpload
 app.use(cookieParcer());
-app.use(fileUpload());
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: " /Users/mac/Desktop/al-manarat-backend/tmp",
+  })
+);
 
 // for swagger documentation
 const swaggerUi = require("swagger-ui-express");
@@ -30,12 +45,14 @@ app.use(morgan("tiny"));
 const home = require("./routes/Home");
 const user = require("./routes/user");
 const customer = require("./routes/customerRequest");
+const project = require("./routes/project");
 
 // router middleware
 
 app.use("/api/v1", home);
 app.use("/api/v1", user);
 app.use("/api/v1", customer);
+app.use("/api/v1", project);
 
 // export app
 module.exports = app;
