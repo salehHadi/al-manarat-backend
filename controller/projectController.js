@@ -4,6 +4,11 @@ const Project = require("../models/Project");
 const cloudinary = require("cloudinary").v2;
 
 exports.addProject = BigPromise(async (req, res, next) => {
+  const { projectName, status, area, floors, appartements, roofs } = req.body;
+  if (!projectName || !status || !area || !floors || !appartements || !roofs) {
+    return next(new CustomeError("sorry all feild are required "));
+  }
+
   let imageHolder;
 
   if (req.files) {
@@ -18,13 +23,6 @@ exports.addProject = BigPromise(async (req, res, next) => {
     );
   }
 
-  const { projectName, status, area, floors, appartements, roofs } = req.body;
-  if (!projectName || !status || !area || !floors || !appartements || !roofs) {
-    return next(new CustomeError("sorry all feild are required "));
-  }
-
-  console.log(projectName, status, area, floors, appartements, roofs);
-
   const project = await Project.create({
     projectName: projectName,
     status: status,
@@ -37,6 +35,7 @@ exports.addProject = BigPromise(async (req, res, next) => {
       secure_url: imageHolder.secure_url,
     },
   });
+
   res.status(200).json({
     success: true,
     project,

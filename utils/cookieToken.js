@@ -1,5 +1,5 @@
-const cookieToken = (user, res) => {
-  const token = user.getJwtToken();
+const cookieToken = async (user, res) => {
+  const token = await user.getJwtToken();
 
   const option = {
     expires: new Date(
@@ -11,7 +11,7 @@ const cookieToken = (user, res) => {
   user.password = undefined;
   res.status(200).cookie("token", token, option).json({
     success: true,
-    token,
+    token: token,
     user,
   });
 };
