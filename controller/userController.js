@@ -3,6 +3,7 @@ const BigPromise = require("../middleware/bigPromise");
 const CustomeError = require("../utils/customeError");
 const cookieToken = require("../utils/cookieToken");
 const mailHelper = require("../utils/mailHelper");
+const crypto = require("crypto");
 
 exports.singup = BigPromise(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -90,4 +91,33 @@ exports.forgotPassword = BigPromise(async (req, res, next) => {
 
     return next(new CustomeError("email failed to send", 500));
   }
+});
+
+exports.resetPassword = BigPromise(async (req, res, next) => {
+  const token = req.params.token;
+
+  const encryptToken = crypto.createHash("sha256").update(token).digest("hex");
+
+  const user = User.findOne({
+    encryptToken: encryptToken,
+    forgotPasswordExpirey: { $gt: Date.now() },
+  });
+  if (!user) {
+    return next(new CustomeError("Token is invalid or expried", 400));
+  }
+
+  if (req.body.password !== req.body.confirmPassword) {
+    return next(
+      new CustomeError("the password & confirm password do not matchs", 400)
+    );
+  }
+
+  user.password = req.body.password;
+  user.forgotPasswordToken = undefined;
+  user.forgotPasswordExpirey = undefined;
+
+  await user.save();
+
+  // I'd give him the cookie token and redirect him to home
+  cookieToken(user, res);
 });

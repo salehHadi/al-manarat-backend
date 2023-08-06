@@ -10,8 +10,6 @@ const mailHelper = async (data) => {
     },
   });
 
-  console.log(data);
-
   const message = {
     from: "sasa97977s@hotmail.com",
     to: data.email,
