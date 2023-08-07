@@ -103,7 +103,6 @@ exports.resetPassword = BigPromise(async (req, res, next) => {
     forgotPasswordExpirey: { $gt: Date.now() },
   });
 
-  console.log();
   if (!user) {
     return next(new CustomeError("Token is invalid or expried", 400));
   }
@@ -119,8 +118,50 @@ exports.resetPassword = BigPromise(async (req, res, next) => {
   user.forgotPasswordExpirey = undefined;
   await user.save();
 
+  cookieToken(user, res);
+});
+
+exports.userLoggedinDashboard = BigPromise(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+
   res.status(200).json({
     success: true,
     user,
+  });
+});
+
+exports.changePassword = BigPromise(async (req, res, next) => {
+  const userId = req.user.id;
+
+  const user = await User.findById(userId).select("+password");
+
+  const isOldPassword = user.isValidatedPassword(req.body.oldPassword);
+  if (!isOldPassword) {
+    return next(new CustomeError("the password is incorrect", 400));
+  }
+
+  if (req.body.newPassword !== req.body.confirmPassword) {
+    return next(
+      new CustomeError("the newPassword and confirm password do not match", 401)
+    );
+  }
+
+  user.password = req.body.newPassword;
+
+  await user.save();
+
+  cookieToken(user, res);
+});
+
+exports.updateUserDetails = BigPromise(async (req, res, next) => {
+  const newData = {};
+  const user = User.findByIdAndUpdate(req.user.id, newData, {
+    new: true,
+    runValidators: true,
+    useFindAndMo,
+  });
+
+  res.status(200).json({
+    success: true,
   });
 });
