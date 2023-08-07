@@ -152,16 +152,3 @@ exports.changePassword = BigPromise(async (req, res, next) => {
 
   cookieToken(user, res);
 });
-
-exports.updateUserDetails = BigPromise(async (req, res, next) => {
-  const newData = {};
-  const user = User.findByIdAndUpdate(req.user.id, newData, {
-    new: true,
-    runValidators: true,
-    useFindAndMo,
-  });
-
-  res.status(200).json({
-    success: true,
-  });
-});

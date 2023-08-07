@@ -9,6 +9,7 @@ exports.addProject = BigPromise(async (req, res, next) => {
     return next(new CustomeError("sorry all feild are required "));
   }
 
+  console.log(projectName, status, area, floors, appartements, roofs);
   let imageHolder;
 
   if (req.files) {
