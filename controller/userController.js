@@ -98,10 +98,12 @@ exports.resetPassword = BigPromise(async (req, res, next) => {
 
   const encryptToken = crypto.createHash("sha256").update(token).digest("hex");
 
-  const user = User.findOne({
-    encryptToken: encryptToken,
+  const user = await User.findOne({
+    forgotPasswordToken: encryptToken,
     forgotPasswordExpirey: { $gt: Date.now() },
   });
+
+  console.log();
   if (!user) {
     return next(new CustomeError("Token is invalid or expried", 400));
   }
@@ -115,9 +117,10 @@ exports.resetPassword = BigPromise(async (req, res, next) => {
   user.password = req.body.password;
   user.forgotPasswordToken = undefined;
   user.forgotPasswordExpirey = undefined;
-
   await user.save();
 
-  // I'd give him the cookie token and redirect him to home
-  cookieToken(user, res);
+  res.status(200).json({
+    success: true,
+    user,
+  });
 });
