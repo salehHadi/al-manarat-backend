@@ -6,9 +6,10 @@ const Jwt = require("jsonwebtoken");
 exports.isUserLoggedin = BigPromise(async (req, res, next) => {
   const token = req.cookies.token;
   //   || req.header("Authorization").replace("Bearer ", "");
+  console.log(token);
 
   if (!token) {
-    return next(new CustomeError("you need to login", 401));
+    return res.redirect("http://localhost:3000/authentication/sign-in");
   }
 
   const decoded = Jwt.verify(token, process.env.JWT_SECRET);

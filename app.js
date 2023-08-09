@@ -1,23 +1,24 @@
 const express = require("express");
 require("dotenv").config();
 const app = express();
-const cors = require("cors");
+// const cors = require("cors");
 const morgan = require("morgan");
 const cookieParcer = require("cookie-parser");
 const fileUpload = require("express-fileupload");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 
 // to get image from FrontEnd image
-const corsOrigin = "http://localhost:3000/";
-app.use(express.static(__dirname + "../.."));
-app.use(cors());
-app.use(
-  cors({
-    origin: [corsOrigin],
-    methods: ["GET", "POST"],
-    credentials: true,
-  })
-);
+// const corsOrigin = "http://localhost:3000/";
+// app.use(express.static(__dirname + "../.."));
+// app.use(cors());
+// app.use(
+//   cors({
+//     origin: [corsOrigin],
+//     methods: ["GET", "POST"],
+//     credentials: true,
+//     optionSuccessStatus: 200,
+//   })
+// );
 
 // regular middleware
 app.use(express.urlencoded({ extended: true }));

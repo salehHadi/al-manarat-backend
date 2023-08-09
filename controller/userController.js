@@ -6,7 +6,7 @@ const mailHelper = require("../utils/mailHelper");
 const crypto = require("crypto");
 
 exports.singup = BigPromise(async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   if (!email || !name || !password) {
     return next(new CustomeError("name, email, password are required", 400));
@@ -15,10 +15,18 @@ exports.singup = BigPromise(async (req, res, next) => {
   const user = await User.create({
     name,
     email,
+    role,
     password,
   });
 
-  cookieToken(user, res);
+  console.log(user);
+
+  user.password = undefined;
+  // cookieToken(user, res);
+  res.status(200).json({
+    success: true,
+    user,
+  });
 });
 
 exports.login = BigPromise(async (req, res, next) => {
