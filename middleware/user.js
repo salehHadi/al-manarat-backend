@@ -22,6 +22,9 @@ exports.isUserLoggedin = BigPromise(async (req, res, next) => {
 exports.customeRoll = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
+      if (roles.includes("admin")) {
+        next();
+      }
       next(new CustomeError(`this role is for ${roles[0]} only `));
     }
     next();
