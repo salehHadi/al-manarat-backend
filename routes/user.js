@@ -9,6 +9,8 @@ const {
   resetPassword,
   userLoggedinDashboard,
   changePassword,
+  getAllUsers,
+  deleteUser,
 } = require("../controller/userController");
 const { isUserLoggedin, customeRole } = require("../middleware/user");
 
@@ -21,7 +23,13 @@ router.route("/password/update").post(isUserLoggedin, changePassword);
 
 // admin Routes
 router.route("/singup-user").post(isUserLoggedin, customeRole("admin"), singup);
+router
+  .route("/delete-user/:id")
+  .delete(isUserLoggedin, customeRole("admin"), deleteUser);
 
 // manager Routes
+router
+  .route("/all-user")
+  .get(isUserLoggedin, customeRole("manager"), getAllUsers);
 
 module.exports = router;

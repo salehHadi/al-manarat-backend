@@ -9,7 +9,8 @@ exports.addProject = BigPromise(async (req, res, next) => {
     return next(new CustomeError("sorry all feild are required "));
   }
 
-  console.log(projectName, status, area, floors, appartements, roofs);
+  console.log(req.body);
+  console.log(req.files);
   let imageHolder;
 
   if (req.files) {
@@ -37,8 +38,5 @@ exports.addProject = BigPromise(async (req, res, next) => {
     },
   });
 
-  res.status(200).json({
-    success: true,
-    project,
-  });
+  res.status(200).redirect("http://localhost:3000/dashboard");
 });

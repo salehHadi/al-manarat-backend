@@ -19,8 +19,6 @@ exports.singup = BigPromise(async (req, res, next) => {
     password,
   });
 
-  console.log(user);
-
   user.password = undefined;
   // cookieToken(user, res);
   res.status(200).json({
@@ -81,8 +79,6 @@ exports.forgotPassword = BigPromise(async (req, res, next) => {
   const myURL = `${req.protocol}://${req.get(
     "host"
   )}/password/reset/${forgotToken}`;
-  console.log(email);
-  console.log(user);
   try {
     await mailHelper({
       email,
@@ -159,4 +155,24 @@ exports.changePassword = BigPromise(async (req, res, next) => {
   await user.save();
 
   cookieToken(user, res);
+});
+
+exports.getAllUsers = BigPromise(async (req, res, next) => {
+  const users = await User.find();
+
+  res.status(200).json({
+    success: true,
+    users,
+  });
+});
+
+exports.deleteUser = BigPromise(async (req, res, next) => {
+  const user = await User.findByIdAndDelete(req.params.id);
+  if (!user) {
+    next(new CustomeError("user not found", 401));
+  }
+
+  res.status(200).json({
+    success: true,
+  });
 });

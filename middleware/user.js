@@ -6,7 +6,6 @@ const Jwt = require("jsonwebtoken");
 exports.isUserLoggedin = BigPromise(async (req, res, next) => {
   const token = req.cookies.token;
   //   || req.header("Authorization").replace("Bearer ", "");
-  console.log(token);
 
   if (!token) {
     return res.redirect("http://localhost:3000/authentication/sign-in");
@@ -22,9 +21,7 @@ exports.isUserLoggedin = BigPromise(async (req, res, next) => {
 exports.customeRole = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      console.log(req.user);
       if (req.user.role === "admin") {
-        console.log("pass");
         return next();
       } else {
         next(new CustomeError(`this role is for ${roles[0]} only `));
