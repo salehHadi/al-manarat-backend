@@ -22,7 +22,7 @@ router.route("/userdashboard").get(isUserLoggedin, userLoggedinDashboard);
 router.route("/password/update").post(isUserLoggedin, changePassword);
 
 // admin Routes
-router.route("/singup-user").post(isUserLoggedin, customeRole("admin"), singup);
+router.route("/singup-user").post(singup); // isUserLoggedin, customeRole("admin"),
 router
   .route("/delete-user/:id")
   .delete(isUserLoggedin, customeRole("admin"), deleteUser);

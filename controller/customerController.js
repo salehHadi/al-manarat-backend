@@ -22,3 +22,12 @@ exports.form = BigPromise(async (req, res, next) => {
     customerRequest,
   });
 });
+
+exports.getAllForms = BigPromise(async (req, res, next) => {
+  const customerRequests = await CustomerRequest.find({});
+
+  res.status(200).json({
+    success: true,
+    customerRequests,
+  });
+});

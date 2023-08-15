@@ -9,8 +9,6 @@ exports.addProject = BigPromise(async (req, res, next) => {
     return next(new CustomeError("sorry all feild are required "));
   }
 
-  console.log(req.body);
-  console.log(req.files);
   let imageHolder;
 
   if (req.files) {
@@ -39,4 +37,13 @@ exports.addProject = BigPromise(async (req, res, next) => {
   });
 
   res.status(200).redirect("http://localhost:3000/dashboard");
+});
+
+exports.getAllProjects = BigPromise(async (req, res, next) => {
+  const allProjects = await Project.find();
+
+  res.status(200).json({
+    success: true,
+    allProjects,
+  });
 });
