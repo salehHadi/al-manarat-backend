@@ -8,13 +8,10 @@ exports.isUserLoggedin = BigPromise(async (req, res, next) => {
   //   || req.header("Authorization").replace("Bearer ", "");
 
   if (!token) {
-    console.log("user not logged in");
     return next(new CustomeError("user is not logged in", 401));
   }
 
   const decoded = Jwt.verify(token, process.env.JWT_SECRET);
-
-  console.log(decoded);
 
   req.user = await User.findById(decoded.id);
 
