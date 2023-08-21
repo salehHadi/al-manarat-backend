@@ -62,6 +62,6 @@ exports.deletedProject = BigPromise(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: "project been deleted",
+    message: "project has been deleted",
   });
 });
