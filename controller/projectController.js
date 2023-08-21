@@ -47,3 +47,21 @@ exports.getAllProjects = BigPromise(async (req, res, next) => {
     allProjects,
   });
 });
+
+exports.deletedProject = BigPromise(async (req, res, next) => {
+  const project = await Project.findById(req.params.id);
+
+  if (!project) {
+    return next(new CustomeError("prject is not found", 401));
+  }
+  await cloudinary.uploader.destroy(project.photo.id);
+
+  await project.deleteOne();
+
+  console.log(project);
+
+  res.status(200).json({
+    success: true,
+    message: "project been deleted",
+  });
+});
